@@ -104,7 +104,7 @@ public class Program
             sb.AppendLine(constant.Attribute("Name").Value);
         }
 
-        sb.AppendLine("#orig#");
+        sb.AppendLine("#orig#()");
 
         File.WriteAllText(Path.Combine("dialect", "api.gml"), sb.ToString());
         File.WriteAllText(Path.Combine("dialect", "assets.gml"), assets.ToString().Replace("\"", ""));
