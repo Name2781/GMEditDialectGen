@@ -77,17 +77,30 @@ public class Program
         foreach (var c in code)
         {
             string codeArgs = "";
-            if (c.Value != null)
+            var fPath = Path.Combine("overrides", $"{c.Key}.json");
+            if (File.Exists(fPath))
             {
-                for (int i = 0; i < c.Value.ArgumentsCount; i++)
+                var overrideArgs = JsonSerializer.Deserialize<List<string>>(File.ReadAllText(fPath));
+
+                for (int i = 0; i < overrideArgs.Count; i++)
                 {
-                    codeArgs += $"argument{i}{(i != c.Value.ArgumentsCount - 1 ? ", " : "")}";
+                    codeArgs += $"{overrideArgs[i]}{(i != overrideArgs.Count - 1 ? ", " : "")}";
+                }
+            }
+            else
+            {
+                if (c.Value != null)
+                {
+                    for (int i = 0; i < c.Value.ArgumentsCount; i++)
+                    {
+                        codeArgs += $"argument{i}{(i != c.Value.ArgumentsCount - 1 ? ", " : "")}";
+                    }
                 }
             }
             sb.AppendLine($"{c.Key}({codeArgs})");
         }
 
-                foreach (var function in functions)
+        foreach (var function in functions)
         {            
             string codeArgs = "";
             var parameters = function.Elements("Parameter");
