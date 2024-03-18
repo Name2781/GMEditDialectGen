@@ -55,6 +55,9 @@ public class Program
         foreach (var codeEntry in data.Code)
         {
             var name = codeEntry.Name.ToString().Replace("gml_Script_", "").Replace("gml_GlobalScript_", "").Replace("gml_Object_", "").Replace("\"", "");
+
+            if (name.StartsWith("anon") || name.StartsWith("___struct___")) continue;
+
             if (code.ContainsKey(name))
             {
                 if (code[name].ArgumentsCount < codeEntry.ArgumentsCount)
